@@ -1,25 +1,17 @@
-# http://automationpractice.com/index.php?id_category=3&controller=category
-
 # Test N1 
 # Add an item to the basket and make sure it is in the basket
-# Test N2 
+
+# Test N2
 # Remove it from the basket and make sure the basket is empty
 
-from locators.locators import LocatorsXPath
+from time import sleep
+import pytest
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium_task.shop.base_page import Base
+from selenium_task.shop.shop import Shop
 
-
-class Shop:
-
-    def __init__(self, driver):
-        self.driver = driver
-        self.card = LocatorsXPath.card
-        self.hover = LocatorsXPath.hover
-        self.remove_popup = LocatorsXPath.remove_popup
-        self.cart_hover = LocatorsXPath.cart_hover
-        self.quantity = LocatorsXPath.quantity
-        self.remove_item = LocatorsXPath.remove_item
-        self.message = LocatorsXPath.message
+@pytest.mark.usefixtures('set_up')
+class Test1(Base, Shop):
 
     def add_cart(self):
         card = self.driver.find_element_by_css_selector(self.card)
@@ -51,3 +43,13 @@ class Shop:
 
         message = self.driver.find_element_by_css_selector(self.message).text
         message.send_keys(text)
+
+    def check_cart(self):
+        driver = self.driver
+        shop = Shop(driver)
+        cart_quantity = shop.cart_quantity
+        cart_quantity_out = 1
+        assert cart_quantity == cart_quantity_out, "positive test failed"
+
+        sleep(5)
+        driver.close()

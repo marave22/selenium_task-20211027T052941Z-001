@@ -4,11 +4,9 @@ from selenium import webdriver
 
 class Base:
 
-    def __init__(self):
-        self.driver = None
-
     @pytest.fixture()
-    def set_up(self):
+    def set_up(self, driver):
+        self.driver = driver
         path = 'C:/Users/mariam.avetisyan/Downloads/selenium_task-20211027T052941Z-001/selenium_task/driver' \
                '/chromedriver.exe '
         driver = webdriver.Chrome(executable_path=path)
